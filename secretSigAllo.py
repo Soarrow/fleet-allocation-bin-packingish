@@ -25,7 +25,7 @@ df[columns_to_convert] = df[columns_to_convert].apply(pd.to_numeric, errors='coe
 
 fleets = []    #list of fleets
 total_power = 0    #keeping track of total fleet power
-systems = 5 #number of systems we want to protect
+systems = [6065, 6131, 6063, 6130, 6061] #number of systems we want to protect
 
 #create commander objects
 for row in df.itertuples():
@@ -66,10 +66,10 @@ print(art_system_limit)
 
 #create bins
 bins = []
-for i in range(systems):
+for system in systems:
     temp_bin = bin.bin()
     temp_bin.limit = art_system_limit
-    temp_bin.number = i
+    temp_bin.number = system
     bins.append(temp_bin)
 
 #fill buckets based on the "limit" ... might be called bin packing
