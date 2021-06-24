@@ -27,7 +27,9 @@ fleets = []    #list of fleets
 total_power = 0    #keeping track of total fleet power
 systems = [6065, 6131, 6063, 6130, 6061] #number of systems we want to protect
 
-#create commander objects
+print(df)
+
+#create fleet objects
 for row in df.itertuples():
     temp1 = fleet.fleet()
     temp2 = fleet.fleet()
@@ -61,7 +63,7 @@ for row in df.itertuples():
 
 
 #tabulate total power and divide by n nodes to get the limit for each system
-art_system_limit = total_power/5 #where 5 is the number of systems we're trying to defend (might need to consider rounding it in the future)
+art_system_limit = total_power/len(systems) #where 5 is the number of systems we're trying to defend (might need to consider rounding it in the future)
 print(art_system_limit)
 
 #create bins
@@ -86,46 +88,48 @@ contains = False
 
 iter = 0
 while(len(fleets) != 0): #while there are still fleets in the list continue
-    print("================")
-    print("iteration: ", iter)
+    # print("================")
+    # print("iteration: ", iter)
 
     for fleet in fleets:
         print(fleet.name, fleet.fleetNum)
         for bin in bins:
-            print("2", contains)
+            # print("2", contains)
+            if fleet.power == 0: # move onto next fleet if the power is 0
+                break
             if(len(bin.fleets) == 0): #if the bin is empty just assign it
 
-                print("Assigned:", fleet.name, fleet.fleetNum, "to bin", bin.number)
+                # print("Assigned:", fleet.name, fleet.fleetNum, "to bin", bin.number)
 
                 bin.fleets.append(fleet)
                 bin.limit = bin.limit-fleet.power
-                print("new bin limit is", bin.number, bin.limit)
+                # print("new bin limit is", bin.number, bin.limit)
                 break
             
             elif(fleet.power < bin.limit):
                 for assignedFleet in bin.fleets:
-                    print("new", assignedFleet.name, bin.number)
+                    # print("new", assignedFleet.name, bin.number)
                     if(assignedFleet.name == fleet.name): #if the commander name is found in the bin move onto the next bin
-                        print("newnew", assignedFleet.name)
-                        print("newnew", fleet.name)
+                        # print("newnew", assignedFleet.name)
+                        # print("newnew", fleet.name)
                         contains = True
                         break
                 print(contains)
                 if contains == True: #in the case that the bin does contain the commander we skip the loop otherwise we add it
                     contains = False
-                    print("skipped bin", bin.number)
+                    # print("skipped bin", bin.number)
                     continue #this should move us onto the next bin
                 elif contains == False: #if contains is still false i.e. the commander was not already assigned into this bin then we assign
                     bin.fleets.append(fleet)
                     bin.limit = bin.limit-fleet.power
-                    print("Assigned:", fleet.name, fleet.fleetNum, "to bin", bin.number)
-                    print("new bin limit is", bin.number, bin.limit)
+                    # print("Assigned:", fleet.name, fleet.fleetNum, "to bin", bin.number)
+                    # print("new bin limit is", bin.number, bin.limit)
                     break
 
             elif (fleet.power > bin.limit): #move onto next bin
                 continue
 
-        print("removed", fleet.name, fleet.fleetNum)
+        # print("removed", fleet.name, fleet.fleetNum)
         fleets.remove(fleet)
         iter += 1
         print()
