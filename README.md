@@ -15,3 +15,5 @@ I used the first-fit decreasing method to assign the fleets
 Potential things to do in the future: 
 - Add a GUI to make it more user friendly
 - Make it more flexible in terms of accepting csv file headings (if this makes sense)
+- Squash any bugs that pop up during actual use
+- Tweak for better allocation in the future?
